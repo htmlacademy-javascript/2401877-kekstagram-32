@@ -8,7 +8,7 @@
 //avatar img/avatar-{{случайное число от 1 до 6}}.svg
 //message взять одно или два случайных предложения из представленных
 //name массив имен придумать самостоятельно
-import { getRandomInteger, getRandomArrayElement, createIdGenerator } from './util.js';
+import {getRandomInteger, getRandomArrayElement, createIdGenerator} from './util.js';
 
 const PICTURE_COUNT = 25;
 
@@ -86,4 +86,4 @@ const getPictures = () => Array.from(
   (_, index) => createPicture(index + 1),
 );
 
-export { getPictures };
+export {getPictures};

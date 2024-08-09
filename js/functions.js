@@ -53,8 +53,7 @@ getNumber(2023); // 2023
 getNumber(-1); // 1
 getNumber(1.5);// 15
 
-//Напишите функцию, которая принимает время начала и конца рабочего дня
-//также время старта и продолжительность встречи в минутах и возвращает true, если встреча не выходит за рамки рабочего дня, и false, если выходит
+//Напишите функцию, возвращает true, если встреча не выходит за рамки рабочего дня, и false, если выходит
 
 function convertToMinutes (time) {
   const [hours, minutes] = time.split(':');
@@ -78,7 +77,7 @@ function checkMeeting(dayStart, dayEnd, meetingStart, meetingDuration) {
 90 - продолжительность встречи в минутах
 */
 checkMeeting('08:00', '17:30', '14:00', 90); // true
-checkMeeting('8:0', '10:0', '8:0', 120);     // true
+checkMeeting('8:0', '10:0', '8:0', 120); // true
 checkMeeting('08:00', '14:30', '14:00', 90); // false
-checkMeeting('14:00', '17:30', '08:0', 90);  // false
+checkMeeting('14:00', '17:30', '08:0', 90); // false
 checkMeeting('8:00', '17:30', '08:00', 900); // false
