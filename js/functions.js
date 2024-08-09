@@ -52,3 +52,33 @@ getNumber('а я томат');// NaN
 getNumber(2023); // 2023
 getNumber(-1); // 1
 getNumber(1.5);// 15
+
+//Напишите функцию, которая принимает время начала и конца рабочего дня
+//также время старта и продолжительность встречи в минутах и возвращает true, если встреча не выходит за рамки рабочего дня, и false, если выходит
+
+function convertToMinutes (time) {
+  const [hours, minutes] = time.split(':');
+  const minutesInHour = 60;
+
+  return hours * minutesInHour + parseInt(minutes, 10);
+};
+
+function checkMeeting(dayStart, dayEnd, meetingStart, meetingDuration) {
+  const dayStartInMinutes = convertToMinutes(dayStart);
+  const dayEndInMinutes = convertToMinutes(dayEnd);
+  const meetingStartInMinutes = convertToMinutes(meetingStart);
+
+  return meetingStartInMinutes >= dayStartInMinutes && meetingStartInMinutes + meetingDuration <= dayEndInMinutes;
+};
+
+/*
+'8:00' - начало рабочего дня
+'17:30' - конец рабочего дня
+'14:00' - начало встречи
+90 - продолжительность встречи в минутах
+*/
+checkMeeting('08:00', '17:30', '14:00', 90); // true
+checkMeeting('8:0', '10:0', '8:0', 120);     // true
+checkMeeting('08:00', '14:30', '14:00', 90); // false
+checkMeeting('14:00', '17:30', '08:0', 90);  // false
+checkMeeting('8:00', '17:30', '08:00', 900); // false
