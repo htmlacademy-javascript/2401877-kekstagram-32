@@ -77,8 +77,8 @@ const createPicture = (index) => ({
   likes: getRandomInteger(LIKES_MIN_COUNT, LIKES_MAX_COUNT),
   comments: Array.from(
     {length: getRandomInteger(COMMENT_MIN_COUNT, COMMENT_MAX_COUNT)},
-    createComment
-  )
+    createComment,
+  ),
 });
 
 const getPictures = () => Array.from(
