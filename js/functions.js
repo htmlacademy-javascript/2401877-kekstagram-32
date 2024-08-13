@@ -60,7 +60,7 @@ function convertToMinutes (time) {
   const minutesInHour = 60;
 
   return hours * minutesInHour + parseInt(minutes, 10);
-};
+}
 
 function checkMeeting(dayStart, dayEnd, meetingStart, meetingDuration) {
   const dayStartInMinutes = convertToMinutes(dayStart);
@@ -68,7 +68,7 @@ function checkMeeting(dayStart, dayEnd, meetingStart, meetingDuration) {
   const meetingStartInMinutes = convertToMinutes(meetingStart);
 
   return meetingStartInMinutes >= dayStartInMinutes && meetingStartInMinutes + meetingDuration <= dayEndInMinutes;
-};
+}
 
 /*
 '8:00' - начало рабочего дня
