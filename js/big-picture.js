@@ -4,11 +4,8 @@ const VISIBLE_COMMENTS = 5;
 
 const bigPictureElement = document.querySelector('.big-picture');
 const commentListElement = bigPictureElement.querySelector('.social__comments');
-const commentCountElement = bigPictureElement.querySelector('.social__comment-count');
-
 const commentShownCountElement = bigPictureElement.querySelector('.social__comment-shown-count');
 const commentTotalCountElement = bigPictureElement.querySelector('.social__comment-total-count');
-
 const commentsLoaderElement = bigPictureElement.querySelector('.comments-loader');
 const bodyElement = document.querySelector('body');
 const cancelButtonElement = bigPictureElement.querySelector('.big-picture__cancel');
