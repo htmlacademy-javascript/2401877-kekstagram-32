@@ -7,6 +7,7 @@ import {
 
 const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASHTAG_COUNT = 5;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const errorText = {
   INVALID_HASHTAG: 'Неправильный хэштег',
@@ -27,6 +28,8 @@ const fileInput = form.querySelector('.img-upload__input');
 const hashtagInput = form.querySelector('.text__hashtags');
 const descriptionInput = form.querySelector('.text__description');
 const submitButton = form.querySelector('.img-upload__submit');
+const photoPreview = form.querySelector('.img-upload__preview img');
+const effectsPreviews = form.querySelectorAll('.effects__preview');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -59,6 +62,22 @@ const toggleSubmitButton = (isDisabled) => {
 
 const isErrorMessageShown = () => Boolean(document.querySelector('.error'));
 
+const isValidType = (file) => {
+  const fileName = file.name.toLowerCase();
+  return FILE_TYPES.some((it) => fileName.endsWith(it));
+};
+
+const normalizeTags = (tagString) => tagString.trim().split(' ').filter((tag) => tag.length > 0);
+
+const hasValidTags = (value) => normalizeTags(value).every((tag) => VALID_HASHTAG.test(tag));
+
+const hasValidCount = (value) => normalizeTags(value).length <= MAX_HASHTAG_COUNT;
+
+const hasUniqueTags = (value) => {
+  const lowerCaseTags = normalizeTags(value).map((tag) => tag.toLowerCase());
+  return lowerCaseTags.length === new Set(lowerCaseTags).size;
+};
+
 function onDocumentKeydown(evt) {
   if(isEscapeKey(evt) && !isErrorMessageShown()) {
     evt.preventDefault();
@@ -72,12 +91,20 @@ function onInputKeydown(evt) {
   }
 }
 
-const onFileUpload = () => {
-  openModal();
-};
-
 const onCancelButtonClick = () => {
   closeModal();
+};
+
+const onFileUpload = () => {
+  const file = fileInput.files[0];
+
+  if (file && isValidType(file)) {
+    photoPreview.src = URL.createObjectURL(file);
+    effectsPreviews.forEach((preview) => {
+      preview.style.backgroundImage = `url('${photoPreview.src}')`;
+    });
+  }
+  openModal();
 };
 
 const setOnFormSubmit = (callback) => {
@@ -91,17 +118,6 @@ const setOnFormSubmit = (callback) => {
       toggleSubmitButton();
     }
   });
-};
-
-const normalizeTags = (tagString) => tagString.trim().split(' ').filter((tag) => tag.length > 0);
-
-const hasValidTags = (value) => normalizeTags(value).every((tag) => VALID_HASHTAG.test(tag));
-
-const hasValidCount = (value) => normalizeTags(value).length <= MAX_HASHTAG_COUNT;
-
-const hasUniqueTags = (value) => {
-  const lowerCaseTags = normalizeTags(value).map((tag) => tag.toLowerCase());
-  return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
 
 pristine.addValidator (
