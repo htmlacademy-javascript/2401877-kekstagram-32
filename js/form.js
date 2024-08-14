@@ -14,6 +14,11 @@ const errorText = {
   NOT_UNIQUE: 'Неуникальные хэштеги',
 };
 
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SUBMITTING: 'Отправляю...'
+};
+
 const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
 const overlay = form.querySelector('.img-upload__overlay');
@@ -21,6 +26,7 @@ const cancelButton = form.querySelector('.img-upload__cancel');
 const fileInput = form.querySelector('.img-upload__input');
 const hashtagInput = form.querySelector('.text__hashtags');
 const descriptionInput = form.querySelector('.text__description');
+const submitButton = form.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -44,8 +50,17 @@ const closeModal = () => {
   document.removeEventListener('keydown', onDocumentKeydown);
 };
 
+const toggleSubmitButton = (isDisabled) => {
+  submitButton.disabled = isDisabled;
+  submitButton.textContext = isDisabled
+    ? SubmitButtonText.SUBMITTING
+    : SubmitButtonText.IDLE;
+};
+
+const isErrorMessageShown = () => Boolean(document.querySelector('.error'));
+
 function onDocumentKeydown(evt) {
-  if(isEscapeKey(evt)) {
+  if(isEscapeKey(evt) && !isErrorMessageShown()) {
     evt.preventDefault();
     closeModal();
   }
@@ -65,10 +80,17 @@ const onCancelButtonClick = () => {
   closeModal();
 };
 
-const onFormSubmit = (evt) => {
-  if (!pristine.validate()) {
+const setOnFormSubmit = (callback) => {
+  form.addEventListener('submit', async (evt) => {
     evt.preventDefault();
-  }
+    const isValid = pristine.validate();
+
+    if (isValid) {
+      toggleSubmitButton(true);
+      await callback(new FormData(form));
+      toggleSubmitButton();
+    }
+  });
 };
 
 const normalizeTags = (tagString) => tagString.trim().split(' ').filter((tag) => tag.length > 0);
@@ -107,5 +129,6 @@ hashtagInput.addEventListener('keydown', onInputKeydown);
 descriptionInput.addEventListener('keydown', onInputKeydown);
 fileInput.addEventListener('change', onFileUpload);
 cancelButton.addEventListener('click', onCancelButtonClick);
-form.addEventListener('submit', onFormSubmit);
 initEffect();
+
+export {setOnFormSubmit, closeModal};
